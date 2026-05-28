@@ -1,0 +1,267 @@
+Traceback (most recent call last):
+  File "/Users/aran/.gemini/antigravity/scratch/retail-doc-portal/extract_content.py", line 94, in main
+    extract_docx(filepath)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/aran/.gemini/antigravity/scratch/retail-doc-portal/extract_content.py", line 23, in extract_docx
+    doc = Document(filepath)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/docx/api.py", line 30, in Document
+    raise ValueError(tmpl % (docx, document_part.content_type))
+ValueError: file '/Users/aran/Downloads/Rent Agreement.doc' is not a Word file, content type is 'application/vnd.openxmlformats-officedocument.themeManager+xml'
+
+################################################################################
+# FILE: AC Receipt.docx
+# PATH: /Users/aran/Downloads/AC Receipt.docx
+################################################################################
+=== BODY PARAGRAPHS ===
+  P0 [Normal]: AC RECEIPT
+  P1 [Normal]: 
+  P2 [Normal]: I, Om Prakash through its Prop M/s Life Ok Pharmacy situated at Shop no-06, Milhad colony, near Bata Flyover, NIT, Faridabad, Haryana, have received 15,000 (Fifteen Thousand only) From Mrs. Shashi Kumari w/o Sh. Om Prakash R/o House no-1224/1, Mathura Road, Near New Town Station, Ram nagar colony, NIT, Faridabad, Haryana through its Prop M/s  Ground floor, MCF no-2833, Sanjay Enclave, NIT, Faridabad, Haryana Against Sale of my AC, make Thomson Capacity 1.5 Tone in working condition which was purchased by me and received full and Final Payment in cash.
+  P3 [Normal]: 
+  P4 [Normal]: 
+  P5 [Normal]: 
+  P6 [Normal]: 
+  P7 [Normal]: (Sign of purchaser)					(Sign of Seller)
+  P8 [Normal]:           Date							        Date
+  P9 [Normal]: 
+  P10 [Normal]: 
+  P11 [List Paragraph]: 						
+
+=== TABLES: None ===
+
+=== HEADERS & FOOTERS ===
+  --- Section 0 ---
+    Header: (linked to previous or empty)
+    Footer: (linked to previous or empty)
+
+################################################################################
+# FILE: AFFIDAVIT (prop).docx
+# PATH: /Users/aran/Downloads/AFFIDAVIT (prop).docx
+################################################################################
+=== BODY PARAGRAPHS ===
+  P0 [Normal]: 
+  P1 [Normal]: 
+  P2 [Normal]: 
+  P3 [Normal]:    AFFIDAVIT (Prop)
+  P4 [Normal]:  I, Himanshu Kumar S/o Sh. Kashee Prasad R/o Moh/Ghusyanagramjaitpur, Moh, Ghusyana, Jaitpur, Purva Jaitpur, post office Ajnar distt. Mahoba, Uttar Pradesh-210423, do hereby solemnly affirm and declare as under: -
+  P5 [List Paragraph]: That I have never been convicted by any court in India under the Drugs & Cosmetics Act 1940 and Rules 1945 framed there under; -
+  P6 [List Paragraph]: That I am sole proprietor of the firm M/s Pradhan Mantri Bhartiya Janaushadhi Kendra Situated at Ground Floor, Shop no-52, Zone-B, High Street Home by Sarvome, Sector-45, Faridabad, Haryana, and do hereby applying for grant of new retail sale Drug License.
+  P7 [List Paragraph]: That I myself will be the overall in-charge and responsible person to my said firm for its day to day conduct and control of business of the firm.
+  P8 [List Paragraph]: That the sale premises of my said firm is the rented property and the same premise is under my legal possession/occupancy as a tenant and it is not connected to any residence.
+  P9 [List Paragraph]: That I had never been a Prop or an active or sleeping partner at any such firm, whose Retail Sale/wholesale drugs License had ever been cancelled by the licensing authority for any reason whatsoever.
+  P10 [List Paragraph]: That the firm has appointed Mr. Parveen Kumar S/o Sh. Shiv Charan R/o House no-392, Malerna Road, 24 Feet Road, Adarsh Nagar, Ballabgarh distt. Faridabad, Haryana, to sell by way of retail sale, who has joined as Regd. Pharmacist at a salary of Rs. 18,000/- per month w.e.f. 26-05-2026 and he is regd. Pharmacist from Haryana State Pharmacy Council vide Regn. No. 24756 dated 31-01-2014 which is valid up 31-12-2028.
+  P11 [List Paragraph]: That I shall pay the salary of the competent person by way of cheque/online transfer in his account.
+  P12 [List Paragraph]: That I have installed CCTV camera at my shop/premises and I will keep one-month backup recording of CCTV Camera.
+  P13 [List Paragraph]: That I have installed a refrigerator at my firm, which is in working condition and wooden racks in my said firm for the storage of Drugs. 
+  P14 [List Paragraph]: That I opt and want to keep all records of Sale of drugs in cash memos /bills/invoice of my said firm which shall be maintained properly and in legible manner.
+  P15 [List Paragraph]: That the sale premises of my said firm will not be used/utilized for any other purpose expect for business of those categories of drugs which will include in the License applied for by me or granted to me at my said firm.
+  P16 [List Paragraph]: That I shall comply with the provisions, rules regulation and conditions of the Drugs & Cosmetics Act 1940 and Rules 1945 framed there under for the time being in force or are amended from time to time under the said Act & Rules.
+  P17 [List Paragraph]: That I shall obtain new Drug License in case of any change in constitution or premises takes place at my firm.  I shall inform the Licensing Authorities if any area alterations take place at my firm.
+  P18 [List Paragraph]: That if in case of resignation of competent person of my firm sale will not done in the absence of RP and I will appoint new RP immediately and will give written information to the drugs Dep’t within one month.
+  P19 [List Paragraph]: That if in case I close my firm I will give written information along with list of drugs laying at my firm unsold.													
+  P20 [Normal]: 														DEPONENT
+  P21 [Normal]:               Verification: -
+  P22 [Normal]: I the above named do hereby solemnly affirm and declare that whatsoever is started above is true and correct the best of my knowledge and belief and nothing has been concealed therein.		
+  P23 [Normal]: 				Date: -
+  P24 [Normal]: 				Place: -									DEPONENT
+
+=== TABLES: None ===
+
+=== HEADERS & FOOTERS ===
+  --- Section 0 ---
+    Header: (linked to previous or empty)
+    Footer: (linked to previous or empty)
+
+################################################################################
+# FILE: AFFIDAVIT(Regd. Pharmacist).docx
+# PATH: /Users/aran/Downloads/AFFIDAVIT(Regd. Pharmacist).docx
+################################################################################
+=== BODY PARAGRAPHS ===
+  P0 [Normal]: 
+  P1 [Normal]: 
+  P2 [Normal]: 
+  P3 [Normal]: 
+  P4 [Normal]: AFFIDAVIT (Regd. Pharmacist)
+  P5 [Normal]: I, Parveen Kumar S/o Sh. Shiv Charan R/o House no-392, Malerna Road, 24 Feet Road, Adarsh Nagar, Ballabgarh distt. Faridabad, Haryana, do hereby solemnly affirms and declare as under: -
+  P6 [List Paragraph]: That I have never been convicted by any court in India under the Drugs & cosmetic Act 1940 and rules 1945 framed there under.
+  P7 [List Paragraph]: That I have joined as registered with the firm M/s Pradhan Mantri Bhartiya Janaushadhi Kendra Situated at Ground Floor, Shop no-52, Zone-B, High Street Home by Sarvome, Sector-45, Faridabad, Haryana, as whole time bases on salary Rs. 18,000/-per month w.e.f. 26-05-2026.
+  P8 [List Paragraph]: That I had never been a proprietor or an active or sleeping partner at any such firm, whose, retail sale/whole sale drugs license had ever been cancelled by the licensing authority for any reason whatsoever.
+  P9 [List Paragraph]: That I have passed Bachelor in pharmacy from B S Anangpuria Institute of Pharmacy, Alampur, Faridabad and I am registered from Haryana State Pharmacy Council Panchkula vide Regn. No. 24756 dated 31-01-2014 which is valid up 31-12-2028.
+  P10 [List Paragraph]: That I will renew my registration certificate from H.S.P.C five years and I will submit the proof to the licensing authority.
+  P11 [List Paragraph]: That I will not work at any other firm/any institute/in any drug manufacturing unit in any capacity during my service with this firm.
+  P12 [List Paragraph]: That I am not a student of any educational institute.
+  P13 [List Paragraph]: That previously I was worked as regd. pharmacist with the firm M/s Ankar Life Care LLP situated at Shop no-G-14, Varun Tower, Ajronda Chowk, NIT Faridabad, Haryana, and resign from the firm on dated 26-05-2026. After resign from this firm, I have not worked as Regd. Pharmacist at anywhere anyfirm.
+  P14 [List Paragraph]: That all particulars of my said qualification and registration are true on the basis of documents and certificate possessed and submitted by me and the same are genuine and not bogus, fake or forged.
+  P15 [List Paragraph]: That I shall comply-with the provision, rules, regulation and condition of the Drugs & Cosmetics act 1940 and Rules 1945 framed there under for the time being in force or are amended from time to time under the said acts and rules.
+  P16 [List Paragraph]: That if in case I resign from the said firm, I will give written information to the licensing authority with the consent of prop of the firm one month before.
+  P17 [List Paragraph]: That at present I am residing at House no-392, Malerna Road, 24 Feet Road, Adarsh Nagar, Ballabgarh distt. Faridabad, Haryana.
+  P18 [List Paragraph]: That I will work at the firm as a full-time employee, attending regularly from my given address.
+  P19 [Normal]: 
+  P20 [Normal]: 	Deponent
+  P21 [Normal]: Verification:
+  P22 [Normal]: I the above named do hereby solemnly affirm and declare to that whatever is started above is true and correct to the best of my knowledge and nothing has been concealed therein.
+  P23 [Normal]: 
+  P24 [Normal]: Date: -
+  P25 [Normal]: Place: -										       Deponent 
+
+=== TABLES: None ===
+
+=== HEADERS & FOOTERS ===
+  --- Section 0 ---
+    Header: (linked to previous or empty)
+    Footer: (linked to previous or empty)
+
+################################################################################
+# FILE: Camera Receipt -.docx
+# PATH: /Users/aran/Downloads/Camera Receipt -.docx
+################################################################################
+=== BODY PARAGRAPHS ===
+  P0 [Normal]: CAMERA RECEIPT
+  P1 [Normal]: 
+  P2 [Normal]: I, Jyoti w/o Sh. Anil R/o Village Kondal Tehsil Hathin Distt Palwal, Haryana, have received 10,000 (Rupees Ten Thousand only) From Mr. Rohit Tewatia S/o Sh. Tek Singh R/o House no-43, Sector-11D, Faridabad, Haryana through its Prop M/s Pradhan Mantri Bhartiya Janaushadhi Kendra Situated at Ground Floor, Shop no-01, Omaxe Hills Market Sector-43, Green Field Colony, Surajkund Faridabad, Haryana against Sale of my Camera, make Hikvision in working condition which was purchased by me and received full and Final Payment in cash.
+  P3 [Normal]: 
+  P4 [Normal]: 
+  P5 [Normal]: 
+  P6 [Normal]: 
+  P7 [Normal]: (Sign of purchaser)					(Sign of Seller)
+  P8 [Normal]:           Date							        Date
+  P9 [Normal]: 
+  P10 [Normal]: 
+  P11 [List Paragraph]: 						
+
+=== TABLES: None ===
+
+=== HEADERS & FOOTERS ===
+  --- Section 0 ---
+    Header: (linked to previous or empty)
+    Footer: (linked to previous or empty)
+
+################################################################################
+# FILE: Inverter Receipt.docx
+# PATH: /Users/aran/Downloads/Inverter Receipt.docx
+################################################################################
+=== BODY PARAGRAPHS ===
+  P0 [Normal]: INVERTER RECEIPT
+  P1 [Normal]: 
+  P2 [Normal]: I, Durgesh S/o Sh. Harbu Lal R/o House no-1224/1, Mathura Road, Near New Town Station, Ram nagar colony, NIT, Faridabad, Haryana, have received 5,000 (Five Thousand only) From Mr. Shashi Kumari w/o Sh. Om Prakash R/o House no-1224/1, Mathura Road, Near New Town Station, Ram nagar colony, NIT, Faridabad, Haryana through its prop M/s  Life Ok Pharmacy situated at Ground floor, MCF no-2833, Sanjay Enclave, NIT, Faridabad, Haryana Against Sale of my Inverter, make Microtek in working condition which was purchased by me and received full and Final Payment in cash.
+  P3 [Normal]: 
+  P4 [Normal]: 
+  P5 [Normal]: 
+  P6 [Normal]: 
+  P7 [Normal]: (Sign of purchaser)					(Sign of Seller)
+  P8 [Normal]:           Date							        Date
+  P9 [Normal]: 
+  P10 [Normal]: 
+  P11 [List Paragraph]: 						
+
+=== TABLES: None ===
+
+=== HEADERS & FOOTERS ===
+  --- Section 0 ---
+    Header: (linked to previous or empty)
+    Footer: (linked to previous or empty)
+
+################################################################################
+# FILE: PROP WORKING REPORT.docx
+# PATH: /Users/aran/Downloads/PROP WORKING REPORT.docx
+################################################################################
+=== BODY PARAGRAPHS ===
+  P0 [Normal]: 
+  P1 [Normal]: 
+  P2 [Normal]: To whom soever it may concern
+  P3 [Normal]: 
+  P4 [Normal]: I, Himanshu Kumar S/o Sh. Kashee Prasad R/o Moh/Ghusyanagramjaitpur, Moh, Ghusyana, Jaitpur, Purva Jaitpur, post office Ajnar distt. Mahoba, Uttar Pradesh-210423, do hereby certify that during the last three years my working details are as follows:  
+  P5 [Normal]: 
+  P6 [Normal]: 
+  P7 [Normal]: Phone no-9319911771							
+  P8 [Normal]: Date: -……………							             Proprietor Signature
+  P9 [Normal]: 					
+  P10 [Normal]: Verification
+  P11 [Normal]: 
+  P12 [Normal]: I Know Mr. Himanshu Kumar S/o Sh. Kashee Prasad having personally for the last three years and as per best of my knowledge, the above-mentioned details are correct and he has never been prosecuted/convicted by any Court in India.
+  P13 [Normal]: 
+  P14 [Normal]: 
+  P15 [Normal]: 
+  P16 [Normal]: Name: - ………………………………………        Name: -..............................................................
+  P17 [Normal]: 
+  P18 [Normal]: Add. /Designation: - ……………………….….     Add. /Designation: -……………….………….
+  P19 [Normal]: 
+  P20 [Normal]: Date: - ………………………………………….     Date: -..........................................................
+  P21 [Normal]: 
+  P22 [Normal]: 
+  P23 [Normal]: 
+
+=== TABLES (1 found) ===
+  --- Table 0 ---
+    Row 0: ['Sr. No.', 'Time Period', 'Working/Occupation', 'Remarks']
+    Row 1: ['', 'Jan 2023 to March', 'Om Sai Medicos\nGreen Field Colony Faridabad', 'Sales Person']
+
+=== HEADERS & FOOTERS ===
+  --- Section 0 ---
+    Header: (linked to previous or empty)
+    Footer: (linked to previous or empty)
+
+################################################################################
+# FILE: Refrigerator Receipt.docx
+# PATH: /Users/aran/Downloads/Refrigerator Receipt.docx
+################################################################################
+=== BODY PARAGRAPHS ===
+  P0 [Normal]: REFRIGERATOR RECEIPT
+  P1 [Normal]: 
+  P2 [Normal]: I, Jyoti w/o Sh. Anil R/o Village Kondal Tehsil Hathin Distt Palwal, Haryana, have received 10,000 (Rupees Ten Thousand only) From Mr. Rohit Tewatia S/o Sh. Tek Singh R/o House no-43, Sector-11D, Faridabad, Haryana through its Prop M/s Pradhan Mantri Bhartiya Janaushadhi Kendra Situated at Ground Floor, Shop no-01, Omaxe Hills Market Sector-43, Green Field Colony, Surajkund Faridabad, Haryana against Sale of my Fridge make Voltas Color Sky Blue Liter 210 in working condition which was purchased by me and received full and Final Payment in cash.
+  P3 [Normal]: 
+  P4 [Normal]: 
+  P5 [Normal]: 
+  P6 [Normal]: 
+  P7 [Normal]: (Sign of purchaser)					(Sign of Seller)
+  P8 [Normal]:           Date							       Date
+  P9 [Normal]: 
+  P10 [Normal]: 
+  P11 [List Paragraph]: 						
+
+=== TABLES: None ===
+
+=== HEADERS & FOOTERS ===
+  --- Section 0 ---
+    Header: (linked to previous or empty)
+    Footer: (linked to previous or empty)
+
+################################################################################
+# FILE: Rent Agreement.doc
+# PATH: /Users/aran/Downloads/Rent Agreement.doc
+################################################################################
+  *** ERROR processing file: file '/Users/aran/Downloads/Rent Agreement.doc' is not a Word file, content type is 'application/vnd.openxmlformats-officedocument.themeManager+xml' ***
+
+################################################################################
+# FILE: RP WORKING REPORT.docx
+# PATH: /Users/aran/Downloads/RP WORKING REPORT.docx
+################################################################################
+=== BODY PARAGRAPHS ===
+  P0 [Normal]: To whom so ever it may concern
+  P1 [Normal]: 
+  P2 [Normal]: I, Parveen Kumar S/o Sh. Shiv Charan R/o House no-392, Malerna Road, 24 Feet Road, Adarsh Nagar, Ballabgarh distt. Faridabad, Haryana, do hereby certify that during the last three years my working details are as follows:  
+  P3 [Normal]: 
+  P4 [Normal]: It is further certified that at present I have joined M/s Pradhan Mantri Bhartiya Janaushadhi Kendra Situated at Ground Floor, Shop no-52, Zone-B, High Street Home by Sarvome, Sector-45, Faridabad, Haryana, w.e.f 26-05-2026 as R.P. and neither working nor studying anywhere else.
+  P5 [Normal]: 
+  P6 [Normal]: Phone no-9999770654					
+  P7 [Normal]: Date: ……………………………						  (Regd. Pharmacist)
+  P8 [Normal]: 						Verification
+  P9 [Normal]: 
+  P10 [Normal]: I know Mr. Parveen Kumar S/o Sh. Shiv Charan having qualification Bachelor in Pharmacy personally for the last more than three years and as per best of my knowledge, the above-mentioned details are correct and he has never been prosecuted/convicted by any Court in India.
+  P11 [Normal]: 
+  P12 [Normal]: Name: - ………………………………………          Name: -.............................................................. 
+  P13 [Normal]: 
+  P14 [Normal]: Add. /Designation: - ……………………….….         Add. /Designation: -……………….…………. 
+  P15 [Normal]: 
+  P16 [Normal]: Date: - ………………………………………….        Date: -.......................................................... 
+
+=== TABLES (1 found) ===
+  --- Table 0 ---
+    Row 0: ['Sr. No.', 'Time Period', 'Working/Occupation', 'Remarks']
+    Row 1: ['', 'July 2024 to May 2026', 'Ankar Life Care LLP situated at Shop no-G-14, Varun Tower, Ajronda Chowk, NIT Faridabad, Haryana ', 'Regd. Pharmacist']
+    Row 2: ['', 'Feb 2024 to June 2024', 'Not working', 'Not working']
+    Row 3: ['', 'Jan 2022 to Jan 2024', 'K L Pharma (A Unit of Medmex Healthcare) Shop no-06, Nihar Singh Market, village Bhudena, Sec 86, Faridabad, Haryana\n', 'Regd. Pharmacy']
+
+=== HEADERS & FOOTERS ===
+  --- Section 0 ---
+    Header: (linked to previous or empty)
+    Footer: (linked to previous or empty)
