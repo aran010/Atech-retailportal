@@ -577,11 +577,20 @@ def generate_documents(context: dict, template_dir: str = TEMPLATES_DIR) -> tupl
                 continue
 
             # Exclude irrelevant applicant affidavits
-            is_prop = context.get("entity_val", "Proprietor") in ["Proprietor", "Partner"]
+            is_prop = context.get("entity_val", "Proprietor") == "Proprietor"
+            is_partner = context.get("entity_val") == "Partner"
             is_dir = context.get("entity_val") == "Director" and not context.get("auth_signatory")
             is_auth = context.get("entity_val") == "Director" and context.get("auth_signatory")
 
             if tpl_name == "AFFIDAVIT (prop).docx" and not is_prop:
+                continue
+            if tpl_name == "AFFIDAVIT (Partner).docx" and not is_partner:
+                continue
+            if tpl_name == "Partner WORKING REPORT.docx" and not is_partner:
+                continue
+            if tpl_name == "Partnership Deed.docx" and not is_partner:
+                continue
+            if tpl_name == "PROP WORKING REPORT.docx" and not is_prop:
                 continue
             if tpl_name == "AFFIDAVIT (Director).docx" and not is_dir:
                 continue
@@ -1276,6 +1285,8 @@ def main():
             "property_ownership": property_ownership,
             "auth_signatory": auth_signatory,
             "directors_data": directors_data,
+            "partners_data": partners_data,
+            "partnership_start_date": partnership_start_date,
             "entity_val": entity_val,
             # Rent Agreement
             "landlord_name": landlord_name.strip(),

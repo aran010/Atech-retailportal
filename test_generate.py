@@ -21,6 +21,11 @@ SAMPLE_CONTEXT = {
         {"name": "Director One", "relation": "S/o", "father_name": "Father One", "address": "Address One"},
         {"name": "Director Two", "relation": "D/o", "father_name": "Father Two", "address": "Address Two"}
     ],
+    "partnership_start_date": "20-02-2026",
+    "partners_data": [
+        {"name": "Rahul", "relation": "S/o", "father_name": "Ramesh Chand", "address": "Near Sarpanch Ghar, Nawada"},
+        {"name": "Aman", "relation": "S/o", "father_name": "Kawar Singh", "address": "Villager Bhatola post office Badoli"}
+    ],
     "property_ownership": "Owned",
     "prop_name": "Himanshu Kumar",
     "prop_relation": "S/o",
