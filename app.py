@@ -541,10 +541,15 @@ def boldify_context(context: dict) -> dict:
     Wrap every user-input string value in RichText(bold=True) so that
     filled-in data appears bold in the generated Word documents.
     Lists of dicts (work history) are processed recursively.
+    Control variables (property_ownership, entity_val, auth_signatory) are
+    kept as plain strings so Jinja2 conditionals work correctly.
     """
+    skip_keys = {"entity_val", "property_ownership", "auth_signatory"}
     bold = {}
     for key, value in context.items():
-        if isinstance(value, str):
+        if key in skip_keys:
+            bold[key] = value
+        elif isinstance(value, str):
             bold[key] = RichText(value, bold=True) if value else RichText("")
         elif isinstance(value, list):
             bold[key] = [
