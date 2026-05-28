@@ -1167,8 +1167,27 @@ def main():
             # Firm
             "firm_name": firm_name.strip(),
             "firm_address": firm_address.strip(),
-            # Pharmacists
+            # Pharmacists (list for looping)
             "pharmacists": pharmacists_data,
+            # Fallback single variables for old templates
+            "rp_name": pharmacists_data[0]["name"] if pharmacists_data else "",
+            "rp_relation": pharmacists_data[0]["relation"] if pharmacists_data else "",
+            "rp_father_name": pharmacists_data[0]["father_name"] if pharmacists_data else "",
+            "rp_address": pharmacists_data[0]["address"] if pharmacists_data else "",
+            "rp_salary": pharmacists_data[0]["salary"] if pharmacists_data else "",
+            "rp_salary_words": amount_to_words(pharmacists_data[0]["salary"]) if pharmacists_data else "",
+            "rp_joining_date": pharmacists_data[0]["joining_date"] if pharmacists_data else "",
+            "rp_reg_number": pharmacists_data[0]["reg_no"] if pharmacists_data else "",
+            "rp_reg_date": pharmacists_data[0]["reg_date"] if pharmacists_data else "",
+            "rp_reg_valid_upto": pharmacists_data[0]["reg_valid_upto"] if pharmacists_data else "",
+            "rp_pharmacy_council": PHARMACY_COUNCIL,
+            "rp_qualification": pharmacists_data[0]["qualification"] if pharmacists_data else "",
+            "rp_college": pharmacists_data[0]["college"] if pharmacists_data else "",
+            "rp_phone": pharmacists_data[0]["phone"] if pharmacists_data else "",
+            "rp_prev_firm_name": pharmacists_data[0]["prev_firm_name"] if pharmacists_data else "",
+            "rp_prev_firm_address": pharmacists_data[0]["prev_firm_address"] if pharmacists_data else "",
+            "rp_resign_date": pharmacists_data[0]["resign_date"] if pharmacists_data else "",
+            "rp_work_history": st.session_state.get("rp_work_history_0", []),
             # Rent Agreement
             "landlord_name": landlord_name.strip(),
             "landlord_relation": landlord_relation,
