@@ -544,13 +544,13 @@ def boldify_context(context: dict) -> dict:
     Control variables (property_ownership, entity_val, auth_signatory) are
     kept as plain strings so Jinja2 conditionals work correctly.
     """
-    skip_keys = {"entity_val", "property_ownership", "auth_signatory"}
+    skip_keys = {"entity_val", "property_ownership", "auth_signatory", "partner_cum_rp"}
     bold = {}
     for key, value in context.items():
         if key in skip_keys:
             bold[key] = value
         elif isinstance(value, str):
-            bold[key] = RichText(value, bold=True) if value else RichText("")
+            bold[key] = RichText(value, bold=True) if value else ""
         elif isinstance(value, list):
             bold[key] = [
                 {
@@ -584,22 +584,37 @@ def generate_documents(context: dict, template_dir: str = TEMPLATES_DIR) -> tupl
             # Exclude irrelevant applicant affidavits
             is_prop = context.get("entity_val", "Proprietor") == "Proprietor"
             is_partner = context.get("entity_val") == "Partner"
+            is_partner_cum_rp = is_partner and context.get("partner_cum_rp")
+            is_partner_only = is_partner and not context.get("partner_cum_rp")
             is_dir = context.get("entity_val") == "Director" and not context.get("auth_signatory")
             is_auth = context.get("entity_val") == "Director" and context.get("auth_signatory")
 
             if tpl_name == "AFFIDAVIT (prop).docx" and not is_prop:
                 continue
-            if tpl_name == "AFFIDAVIT (Partner).docx" and not is_partner:
+            # Regular Partner affidavit — skip if partner_cum_rp
+            if tpl_name == "AFFIDAVIT (Partner).docx" and not is_partner_only:
+                continue
+            # Partner cum RP affidavit — only when partner_cum_rp
+            if tpl_name == "AFFIDAVIT (Partner cum RP).docx" and not is_partner_cum_rp:
                 continue
             if tpl_name == "Partner WORKING REPORT.docx" and not is_partner:
                 continue
             if tpl_name == "Partnership Deed.docx" and not is_partner:
+                continue
+            # RP Working Report (Partner cum RP) — only when partner_cum_rp
+            if tpl_name == "RP WORKING REPORT (Partner cum RP).docx" and not is_partner_cum_rp:
+                continue
+            # Regular RP Working Report — skip when partner_cum_rp
+            if tpl_name == "RP WORKING REPORT.docx" and is_partner_cum_rp:
                 continue
             if tpl_name == "PROP WORKING REPORT.docx" and not is_prop:
                 continue
             if tpl_name == "AFFIDAVIT (Director).docx" and not is_dir:
                 continue
             if tpl_name == "AFFIDAVIT (Auth Signatory).docx" and not is_auth:
+                continue
+            # No separate pharmacist affidavit for Partner cum RP
+            if tpl_name == "AFFIDAVIT(Regd. Pharmacist).docx" and is_partner_cum_rp:
                 continue
 
             tpl_path = os.path.join(template_dir, tpl_name)
@@ -950,9 +965,11 @@ def main():
         # ── Partners ──
         partners_data = []
         partnership_start_date = ""
+        partner_cum_rp = False
         if entity_val == "Partner":
             st.markdown("### Partnership Details")
             partnership_start_date = st.text_input("Partnership Start Date (e.g. 20-02-2026)")
+            partner_cum_rp = st.checkbox("Is one of the partners also the Registered Pharmacist? (Partner cum RP)", value=False)
             num_partners = st.number_input("Number of OTHER Partners", min_value=0, max_value=20, value=1)
             for i in range(num_partners):
                 with st.expander(f"Other Partner {i+1}", expanded=False):
@@ -974,63 +991,102 @@ def main():
 
 
         # ── Registered Pharmacist ───────────────────────────────
-        with st.expander("Registered Pharmacist Details", expanded=True):
-            pharmacists_data = []
-            num_pharmacists = st.session_state.get("num_pharmacists", 1)
-            for i in range(num_pharmacists):
-                st.markdown(f"**Pharmacist {i+1}**")
+        pharmacists_data = []
+        if partner_cum_rp:
+            # Partner IS the RP — collect their own pharmacy details
+            with st.expander("Your Pharmacy Details (Partner cum RP)", expanded=True):
                 col_c, col_d = st.columns(2)
-
                 with col_c:
-                    rp_name = st.text_input("Pharmacist Name :red[*]", key=f"rp_name_{i}")
-                    c_rp_rel, c_rp_f = st.columns(2)
-                    with c_rp_rel:
-                        rp_relation = st.selectbox("Relation", options=["S/o", "D/o", "W/o"], index=0, key=f"rp_relation_{i}")
-                    with c_rp_f:
-                        rp_father_name = st.text_input("Father / Relative", key=f"rp_father_{i}")
-                    rp_address = st.text_area("Pharmacist Address", height=80, key=f"rp_address_{i}")
-                    rp_phone = st.text_input("Phone", max_chars=10, key=f"rp_phone_{i}")
-
+                    pcr_qualification = st.text_input("Qualification (e.g. Bachelor in Pharmacy)", key="pcr_qual")
+                    pcr_college = st.text_input("College / Institute", key="pcr_college")
+                    pcr_prev_firm_name = st.text_input("Previous Firm Name (leave blank if none)", key="pcr_pfn")
+                    pcr_prev_firm_address = st.text_input("Previous Firm Address", key="pcr_pfa")
                 with col_d:
-                    rp_salary = st.text_input("Salary (Rs.)", key=f"rp_salary_{i}")
-                    rp_joining_date = st.date_input("Joining Date", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key=f"rp_joining_{i}")
+                    pcr_joining_date = st.date_input("Joining Date (at current firm)", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key="pcr_joining")
                     c_reg, c_regd = st.columns(2)
                     with c_reg:
-                        rp_reg_no = st.text_input("Reg. Number", key=f"rp_reg_{i}")
+                        pcr_reg_no = st.text_input("Reg. Number", key="pcr_reg")
                     with c_regd:
-                        rp_reg_date = st.date_input("Reg. Date", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key=f"rp_reg_date_{i}")
-                    rp_reg_validity = st.date_input("Reg. Valid Upto", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key=f"rp_reg_validity_{i}")
-                
-                col_e, col_f = st.columns(2)
-                with col_e:
-                    rp_qualification = st.text_input("Qualification", key=f"rp_qual_{i}")
-                    rp_prev_firm_name = st.text_input("Previous Firm Name", key=f"rp_pfn_{i}")
-                with col_f:
-                    rp_college = st.text_input("College / Institute", key=f"rp_coll_{i}")
-                    rp_prev_firm_address = st.text_input("Previous Firm Address", key=f"rp_pfa_{i}")
-                
-                c_res, _ = st.columns(2)
-                with c_res:
-                    rp_resign_date = st.date_input("Resignation Date (from previous firm)", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key=f"rp_resign_date_{i}")
-                
+                        pcr_reg_date = st.date_input("Reg. Date", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key="pcr_reg_date")
+                    pcr_reg_validity = st.date_input("Reg. Valid Upto", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key="pcr_reg_validity")
+                    pcr_resign_date = st.date_input("Resignation Date (from previous firm)", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key="pcr_resign_date")
+
+                # Store as a single pharmacist entry so the context builder works
                 pharmacists_data.append({
-                    "name": rp_name.strip(),
-                    "relation": rp_relation,
-                    "father_name": rp_father_name.strip(),
-                    "address": rp_address.strip(),
-                    "phone": rp_phone.strip(),
-                    "salary": rp_salary.strip(),
-                    "joining_date": rp_joining_date.strftime("%d-%m-%Y") if rp_joining_date else "",
-                    "reg_no": rp_reg_no.strip(),
-                    "reg_date": rp_reg_date.strftime("%d-%m-%Y") if rp_reg_date else "",
-                    "reg_valid_upto": rp_reg_validity.strftime("%d-%m-%Y") if rp_reg_validity else "",
-                    "qualification": rp_qualification.strip(),
-                    "college": rp_college.strip(),
-                    "prev_firm_name": rp_prev_firm_name.strip(),
-                    "prev_firm_address": rp_prev_firm_address.strip(),
-                    "resign_date": rp_resign_date.strftime("%d-%m-%Y") if rp_resign_date else "",
+                    "name": "",  # Not needed — applicant is the RP
+                    "relation": "",
+                    "father_name": "",
+                    "address": "",
+                    "phone": "",
+                    "salary": "",
+                    "joining_date": pcr_joining_date.strftime("%d-%m-%Y") if pcr_joining_date else "",
+                    "reg_no": pcr_reg_no.strip(),
+                    "reg_date": pcr_reg_date.strftime("%d-%m-%Y") if pcr_reg_date else "",
+                    "reg_valid_upto": pcr_reg_validity.strftime("%d-%m-%Y") if pcr_reg_validity else "",
+                    "qualification": pcr_qualification.strip(),
+                    "college": pcr_college.strip(),
+                    "prev_firm_name": pcr_prev_firm_name.strip(),
+                    "prev_firm_address": pcr_prev_firm_address.strip(),
+                    "resign_date": pcr_resign_date.strftime("%d-%m-%Y") if pcr_resign_date else "",
                 })
-                st.markdown("---")
+        else:
+            with st.expander("Registered Pharmacist Details", expanded=True):
+                num_pharmacists = st.session_state.get("num_pharmacists", 1)
+                for i in range(num_pharmacists):
+                    st.markdown(f"**Pharmacist {i+1}**")
+                    col_c, col_d = st.columns(2)
+
+                    with col_c:
+                        rp_name = st.text_input("Pharmacist Name :red[*]", key=f"rp_name_{i}")
+                        c_rp_rel, c_rp_f = st.columns(2)
+                        with c_rp_rel:
+                            rp_relation = st.selectbox("Relation", options=["S/o", "D/o", "W/o"], index=0, key=f"rp_relation_{i}")
+                        with c_rp_f:
+                            rp_father_name = st.text_input("Father / Relative", key=f"rp_father_{i}")
+                        rp_address = st.text_area("Pharmacist Address", height=80, key=f"rp_address_{i}")
+                        rp_phone = st.text_input("Phone", max_chars=10, key=f"rp_phone_{i}")
+
+                    with col_d:
+                        rp_salary = st.text_input("Salary (Rs.)", key=f"rp_salary_{i}")
+                        rp_joining_date = st.date_input("Joining Date", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key=f"rp_joining_{i}")
+                        c_reg, c_regd = st.columns(2)
+                        with c_reg:
+                            rp_reg_no = st.text_input("Reg. Number", key=f"rp_reg_{i}")
+                        with c_regd:
+                            rp_reg_date = st.date_input("Reg. Date", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key=f"rp_reg_date_{i}")
+                        rp_reg_validity = st.date_input("Reg. Valid Upto", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key=f"rp_reg_validity_{i}")
+                    
+                    col_e, col_f = st.columns(2)
+                    with col_e:
+                        rp_qualification = st.text_input("Qualification", key=f"rp_qual_{i}")
+                        rp_prev_firm_name = st.text_input("Previous Firm Name", key=f"rp_pfn_{i}")
+                    with col_f:
+                        rp_college = st.text_input("College / Institute", key=f"rp_coll_{i}")
+                        rp_prev_firm_address = st.text_input("Previous Firm Address", key=f"rp_pfa_{i}")
+                    
+                    c_res, _ = st.columns(2)
+                    with c_res:
+                        rp_resign_date = st.date_input("Resignation Date (from previous firm)", value=None, min_value=MIN_DATE, max_value=MAX_DATE, key=f"rp_resign_date_{i}")
+                    
+                    pharmacists_data.append({
+                        "name": rp_name.strip(),
+                        "relation": rp_relation,
+                        "father_name": rp_father_name.strip(),
+                        "address": rp_address.strip(),
+                        "phone": rp_phone.strip(),
+                        "salary": rp_salary.strip(),
+                        "joining_date": rp_joining_date.strftime("%d-%m-%Y") if rp_joining_date else "",
+                        "reg_no": rp_reg_no.strip(),
+                        "reg_date": rp_reg_date.strftime("%d-%m-%Y") if rp_reg_date else "",
+                        "reg_valid_upto": rp_reg_validity.strftime("%d-%m-%Y") if rp_reg_validity else "",
+                        "qualification": rp_qualification.strip(),
+                        "college": rp_college.strip(),
+                        "prev_firm_name": rp_prev_firm_name.strip(),
+                        "prev_firm_address": rp_prev_firm_address.strip(),
+                        "resign_date": rp_resign_date.strftime("%d-%m-%Y") if rp_resign_date else "",
+                    })
+                    st.markdown("---")
+
 
         # ── Property Ownership ──────────────────────────────────
         st.markdown("<br>", unsafe_allow_html=True)
@@ -1251,7 +1307,7 @@ def main():
             "Firm Name": firm_name,
             "Firm Address": firm_address,
         }
-        if pharmacists_data:
+        if pharmacists_data and not partner_cum_rp:
             required["Pharmacist 1 Name"] = pharmacists_data[0]["name"]
         if entity_type == "proprietor":
             required["Proprietor Name"] = prop_name
@@ -1317,6 +1373,7 @@ def main():
             "directors_data": directors_data,
             "partners_data": partners_data,
             "partnership_start_date": partnership_start_date,
+            "partner_cum_rp": partner_cum_rp,
             "entity_val": entity_val,
             # Rent Agreement
             "landlord_name": landlord_name.strip(),

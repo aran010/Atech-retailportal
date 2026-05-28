@@ -1230,14 +1230,169 @@ def _template_partnership_deed(doc: docx.Document):
     )
 
 
+def _template_affidavit_partner_cum_rp(doc: docx.Document):
+    """Partner cum RP affidavit — the partner IS also the Regd. Pharmacist."""
+    _add_para(doc, "AFFIDAVIT (Partner cum RP)", alignment=WD_ALIGN_PARAGRAPH.CENTER, bold=True)
+    _add_para(doc,
+        "I, {{r prop_name }} {{r prop_relation }} Sh. {{r prop_father_name }} R/o {{r prop_address }}, do hereby solemnly affirm & declare as under: -"
+    )
+    _add_para(doc,
+        "That I have never been convicted by any court in India under the Drug & Cosmetics Act 1940 and Rules 1945 framed there under."
+    )
+    _add_para(doc,
+        "That I am active partner cum Regd. Pharmacist of the firm M/s {{r firm_name }} Situated at {{r firm_address }}, and hereby applying for grant of new retail sale drug license. "
+    )
+    _add_para(doc, "That the other partner of the firm are the following detail:-")
+    _add_para(doc,
+        "{% for p in partners_data %}"
+        "Mr./Ms. {{r p.name }} {{r p.relation }} Sh. {{r p.father_name }} R/o {{r p.address }}."
+        "{% endfor %}"
+    )
+    _add_para(doc,
+        "That I myself and {% if partners_data %}{{r partners_data[0].name }}{% else %}the Partner{% endif %} will be the overall in-charge and responsible person to our said firm for its day to day conduct and control of business."
+    )
+    _add_para(doc,
+        "{% if property_ownership == 'Owned' %}"
+        "That the sale premises of my said firm is the owned property and the same premises is under my legal possession/occupancy and it is not connected to any residence."
+        "{% else %}"
+        "That the sale premises of my said firm is the rented property and the same premises is under my legal possession/occupancy as a tenant and it is not connected to any residence."
+        "{% endif %}"
+    )
+    _add_para(doc,
+        "That I had never been a partner or an active or sleeping partner at any such firm, whose whole sale/retail sale Drug license had ever been cancelled by the licensing authority for any reason, whatsoever."
+    )
+    _add_para(doc,
+        "That I have passed {{r rp_qualification }} from {{r rp_college }}, and I am regd. Pharmacist from {{r rp_pharmacy_council }} vide Regn. No. {{r rp_reg_number }} dated {{r rp_reg_date }} which is valid up {{r rp_reg_valid_upto }}."
+    )
+    _add_para(doc,
+        "{% if rp_prev_firm_name %}"
+        "That I have worked as regd. pharmacist at M/s {{r rp_prev_firm_name }} {{r rp_prev_firm_address }}. Before joining from this firm, I have resigned from my previous firm w.e.f {{r rp_resign_date }}."
+        "{% else %}"
+        "That I have not worked as regd. pharmacist at any firm since my registration as Regd. pharmacist. Before joining from this firm, I have not worked as Regd. Pharmacist at anywhere anyfirm."
+        "{% endif %}"
+    )
+    _add_para(doc,
+        "That I have installed CCTV camera at my shop/premises and I will keep one-month backup recording of CCTV Camera."
+    )
+    _add_para(doc,
+        "That I would keep all records of sale & purchase etc. of drugs in cash memos / bills / invoices of my said firm, which shall be maintained properly and in legible manner."
+    )
+    _add_para(doc,
+        "That the sale premises of my said firm will not be used / utilized for any other purpose expect for business of those categories of drugs which include in the license applied for by me or granted to me at my said firm."
+    )
+    _add_para(doc,
+        "That I shall comply with the provision, rules, regulation and condition of the Drugs & Cosmetics Act 1940 and Rules 1945 framed there under for the time being in force or are amended from time to time under the said Acts and Rules."
+    )
+    _add_para(doc,
+        "That I shall obtain new Drug License in case of any change in constitution or premises takes place at my firm. I shall inform the Licensing Authority, if any area alteration takes place at my firm."
+    )
+    _add_para(doc,
+        "That the sale will not be done in the absence of Regd. Pharmacist in case of his resignation and I will appoint new Regd. Pharmacist immediately under written Intimation to the Licensing authority, within one month of such change."
+    )
+    _add_para(doc,
+        "That if in case, I close my firm I will give written information along with list lying at my firm unsold."
+    )
+    p_dep = doc.add_paragraph()
+    p_dep.add_run("Deponent").bold = True
+    p_dep.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
+    _add_para(doc, "Verification:")
+    _add_para(doc,
+        "I, the above named do hereby solemnly affirm and declare that whatever is started above is true and correct to the best of my knowledge and belief and nothing cancelled therein."
+    )
+    _add_para(doc, "Place: \nDated: ")
+    p_dep2 = doc.add_paragraph()
+    p_dep2.add_run("Deponent").bold = True
+    p_dep2.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
+
+def _template_rp_working_report_partner_cum_rp(doc):
+    """RP Working Report for Partner cum RP — uses applicant's own details."""
+    _add_para(doc, "To whom so ever it may concern")
+    _add_empty_para(doc)
+    _add_para(doc,
+        "I, {{r prop_name }} {{r prop_relation }} Sh. {{r prop_father_name }} "
+        "R/o {{r prop_address }}, do hereby certify that during the last three "
+        "years my working details are as follows:"
+    )
+    _add_empty_para(doc)
+
+    # Create table: header row + loop-start row + data row + loop-end row
+    table = doc.add_table(rows=4, cols=4)
+    table.style = "Table Grid"
+
+    headers = ["Sr. No.", "Time Period", "Working/Occupation", "Remarks"]
+    for i, header_text in enumerate(headers):
+        cell = table.rows[0].cells[i]
+        cell.text = ""
+        run = cell.paragraphs[0].add_run(header_text)
+        run.bold = True
+        run.font.name = "Calibri"
+        run.font.size = Pt(11)
+
+    table.rows[1].cells[0].paragraphs[0].text = "{%tr for item in rp_work_history %}"
+    table.rows[1].cells[1].paragraphs[0].text = ""
+    table.rows[1].cells[2].paragraphs[0].text = ""
+    table.rows[1].cells[3].paragraphs[0].text = ""
+
+    data_row = table.rows[2]
+    data_row.cells[0].text = ""
+    data_row.cells[0].paragraphs[0].add_run("{{r item.sr_no }}").font.size = Pt(11)
+    data_row.cells[1].text = ""
+    data_row.cells[1].paragraphs[0].add_run("{{r item.time_period }}").font.size = Pt(11)
+    data_row.cells[2].text = ""
+    data_row.cells[2].paragraphs[0].add_run("{{r item.occupation }}").font.size = Pt(11)
+    data_row.cells[3].text = ""
+    data_row.cells[3].paragraphs[0].add_run("{{r item.remarks }}").font.size = Pt(11)
+
+    table.rows[3].cells[0].paragraphs[0].text = "{%tr endfor %}"
+    table.rows[3].cells[1].paragraphs[0].text = ""
+    table.rows[3].cells[2].paragraphs[0].text = ""
+    table.rows[3].cells[3].paragraphs[0].text = ""
+
+    _add_empty_para(doc)
+    _add_para(doc,
+        "It is further certified that at present I have joined M/s {{r firm_name }} "
+        "Situated at {{r firm_address }}, w.e.f {{r rp_joining_date }} as RP and "
+        "neither working nor studying anywhere else."
+    )
+    _add_empty_para(doc)
+    _add_para(doc, "Phone no-{{r prop_phone }}")
+    _add_empty_para(doc)
+    _add_para(doc, "Date: ……………………………\t\t\t\t         (Partner cum Regd. Pharmacist)")
+    _add_empty_para(doc)
+    _add_para(doc, "Verification")
+    _add_empty_para(doc)
+    _add_para(doc,
+        "I know Mr. {{r prop_name }} {{r prop_relation }} Sh. {{r prop_father_name }} "
+        "having qualification {{r rp_qualification }} personally for the last more "
+        "than three years and as per best of my knowledge, the above-mentioned "
+        "details are correct and he has never been prosecuted/convicted by any "
+        "Court in India."
+    )
+    _add_empty_para(doc)
+
+    witness_table = doc.add_table(rows=4, cols=2)
+    witness_labels = ["Name……………………………", "Add.……………………………", "Designation……………………………", "Date……………………………"]
+    for i, label in enumerate(witness_labels):
+        witness_table.rows[i].cells[0].text = label
+        witness_table.rows[i].cells[1].text = label
+        for cell in [witness_table.rows[i].cells[0], witness_table.rows[i].cells[1]]:
+            for run in cell.paragraphs[0].runs:
+                run.font.name = "Calibri"
+                run.font.size = Pt(11)
+
+
 # ── Registry: filename → builder function ───────────────────────────────
 
 TEMPLATES = {
     "AC Receipt.docx":                      _template_ac_receipt,
     "AFFIDAVIT (prop).docx":                _template_affidavit_prop,
     "AFFIDAVIT (Partner).docx":             _template_affidavit_partner,
+    "AFFIDAVIT (Partner cum RP).docx":      _template_affidavit_partner_cum_rp,
     "Partner WORKING REPORT.docx":          _template_partner_working_report,
     "Partnership Deed.docx":                _template_partnership_deed,
+    "RP WORKING REPORT (Partner cum RP).docx": _template_rp_working_report_partner_cum_rp,
     "AFFIDAVIT (Director).docx":            _template_affidavit_director,
     "AFFIDAVIT (Auth Signatory).docx":      _template_affidavit_auth,
     "AFFIDAVIT(Regd. Pharmacist).docx":     _template_affidavit_rp,
@@ -1254,8 +1409,10 @@ ADDR_CHANGE_TEMPLATES = {
     "AC Receipt.docx":                      _template_ac_receipt,
     "AFFIDAVIT (prop).docx":                _template_addr_affidavit_prop,
     "AFFIDAVIT (Partner).docx":             _template_affidavit_partner,
+    "AFFIDAVIT (Partner cum RP).docx":      _template_affidavit_partner_cum_rp,
     "Partner WORKING REPORT.docx":          _template_partner_working_report,
     "Partnership Deed.docx":                _template_partnership_deed,
+    "RP WORKING REPORT (Partner cum RP).docx": _template_rp_working_report_partner_cum_rp,
     "AFFIDAVIT (Director).docx":            _template_affidavit_director,
     "AFFIDAVIT (Auth Signatory).docx":      _template_affidavit_auth,
     "AFFIDAVIT(Regd. Pharmacist).docx":     _template_addr_affidavit_rp,
