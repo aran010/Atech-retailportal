@@ -27,7 +27,7 @@ MAX_DATE = date(2100, 12, 31)
 # ── Page Configuration ───────────────────────────────────────────────────
 
 st.set_page_config(
-    page_title="Aran Technologies - Retail Document Portal",
+    page_title="Drug File Management System",
     page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
@@ -72,6 +72,12 @@ st.markdown(
     [data-testid="stExpander"] summary p,
     button, div[role="radiogroup"] > label > div:last-child {
         font-family: 'Outfit', 'Inter', sans-serif !important;
+    }
+    
+    /* ── Hide Streamlit Cloud Toolbar ──────────────── */
+    [data-testid="stToolbar"] {
+        display: none !important;
+        visibility: hidden !important;
     }
     
     /* ── Static Background Layout ──────────────────── */
@@ -671,7 +677,7 @@ def main():
         # Brand strip
         st.markdown(
             '<div class="sidebar-brand-strip">'
-            '<h2>ATech Drug File</h2>'
+            '<h2>DFMS</h2>'
             '</div>',
             unsafe_allow_html=True,
         )
@@ -703,7 +709,7 @@ def main():
         f"""
         <div class="portal-header-wrapper">
             <div class="portal-header">
-                <h1>ARAN TECHNOLOGIES <span class="accent">-</span> RETAIL PORTAL</h1>
+                <h1>Drug File Management System</h1>
                 <span class="rule"></span>
                 <p class="subtitle">Automated document generation for new retail drug file processing</p>
             </div>
