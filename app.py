@@ -585,31 +585,26 @@ def generate_documents(context: dict, template_dir: str = TEMPLATES_DIR) -> tupl
             is_prop = context.get("entity_val", "Proprietor") == "Proprietor"
             is_partner = context.get("entity_val") == "Partner"
             is_partner_cum_rp = is_partner and context.get("partner_cum_rp")
-            is_partner_only = is_partner and not context.get("partner_cum_rp")
-            is_dir = context.get("entity_val") == "Director" and not context.get("auth_signatory")
-            is_auth = context.get("entity_val") == "Director" and context.get("auth_signatory")
+            is_dir = context.get("entity_val") == "Director"
+            is_auth = is_dir and context.get("auth_signatory")
 
             if tpl_name == "AFFIDAVIT (prop).docx" and not is_prop:
                 continue
-            # Regular Partner affidavit — skip if partner_cum_rp
-            if tpl_name == "AFFIDAVIT (Partner).docx" and not is_partner_only:
+            if tpl_name == "AFFIDAVIT (Partner).docx" and not is_partner:
                 continue
-            # Partner cum RP affidavit — only when partner_cum_rp
             if tpl_name == "AFFIDAVIT (Partner cum RP).docx" and not is_partner_cum_rp:
                 continue
             if tpl_name == "Partner WORKING REPORT.docx" and not is_partner:
                 continue
             if tpl_name == "Partnership Deed.docx" and not is_partner:
                 continue
-            # RP Working Report (Partner cum RP) — only when partner_cum_rp
             if tpl_name == "RP WORKING REPORT (Partner cum RP).docx" and not is_partner_cum_rp:
                 continue
-            # Regular RP Working Report — skip when partner_cum_rp
             if tpl_name == "RP WORKING REPORT.docx" and is_partner_cum_rp:
                 continue
             if tpl_name == "PROP WORKING REPORT.docx" and not is_prop:
                 continue
-            if tpl_name == "AFFIDAVIT (Director).docx" and not is_dir:
+            if tpl_name in ["AFFIDAVIT (Director).docx", "AFFIDAVIT (Auth Signatory).docx"] and not is_dir:
                 continue
             if tpl_name == "AFFIDAVIT (Auth Signatory).docx" and not is_auth:
                 continue
@@ -641,8 +636,125 @@ def generate_documents(context: dict, template_dir: str = TEMPLATES_DIR) -> tupl
                     safe_rp = "".join(c for c in ph["name"] if c.isalnum() or c in (" ", "-", "_")).strip()
                     if not safe_rp:
                         safe_rp = f"Pharmacist_{idx+1}"
-                    out_name = f"Filled_AFFIDAVIT(Regd. Pharmacist) {safe_rp}.docx"
+                    out_name = f"Filled_AFFIDAVIT(Regd. Pharmacist) - {safe_rp}.docx"
                     zf.writestr(out_name, doc_buffer.read())
+                    rendered_names.append(out_name)
+                continue
+
+            if tpl_name in ["AFFIDAVIT (Partner).docx", "AFFIDAVIT (Partner cum RP).docx"]:
+                applicant = {
+                    "name": context.get("prop_name", ""),
+                    "relation": context.get("prop_relation", ""),
+                    "father_name": context.get("prop_father_name", ""),
+                    "address": context.get("prop_address", ""),
+                }
+                other_partners = context.get("partners_data", [])
+                all_partners = [applicant] + other_partners
+                
+                bold_applicant = {
+                    "name": bold_context.get("prop_name", ""),
+                    "relation": bold_context.get("prop_relation", ""),
+                    "father_name": bold_context.get("prop_father_name", ""),
+                    "address": bold_context.get("prop_address", ""),
+                    "reg_no": bold_context.get("rp_reg_number", ""),
+                    "reg_date": bold_context.get("rp_reg_date", ""),
+                    "reg_valid_upto": bold_context.get("rp_reg_valid_upto", ""),
+                }
+                bold_other_partners = bold_context.get("partners_data", [])
+                all_partners_bold = [bold_applicant] + bold_other_partners
+
+                for idx, p_bold in enumerate(all_partners_bold):
+                    is_applicant = (idx == 0)
+                    
+                    # Partner cum RP affidavit is ONLY for the applicant (if partner_cum_rp is True)
+                    if tpl_name == "AFFIDAVIT (Partner cum RP).docx" and not is_applicant:
+                        continue
+                    
+                    # Regular Partner affidavit is for EVERYONE if partner_cum_rp is False
+                    # If partner_cum_rp is True, it's ONLY for the OTHER partners (applicant gets the cum RP one)
+                    if tpl_name == "AFFIDAVIT (Partner).docx" and (is_partner_cum_rp and is_applicant):
+                        continue
+                        
+                    ctx_copy = dict(bold_context)
+                    ctx_copy["prop_name"] = p_bold["name"]
+                    ctx_copy["prop_relation"] = p_bold["relation"]
+                    ctx_copy["prop_father_name"] = p_bold["father_name"]
+                    ctx_copy["prop_address"] = p_bold["address"]
+                    
+                    # Other partners are everyone except the current one
+                    remaining_partners = all_partners_bold[:idx] + all_partners_bold[idx+1:]
+                    ctx_copy["partners_data"] = remaining_partners
+                    
+                    # If partner_cum_rp, inject applicant into pharmacists_data so appointment clause works for other partners
+                    if is_partner_cum_rp and tpl_name == "AFFIDAVIT (Partner).docx":
+                        ctx_copy["pharmacists_data"] = [bold_applicant]
+
+                    tpl = DocxTemplate(tpl_path)
+                    tpl.render(ctx_copy)
+                    doc_buffer = io.BytesIO()
+                    tpl.save(doc_buffer)
+                    doc_buffer.seek(0)
+                    
+                    safe_name = "".join(c for c in all_partners[idx]["name"] if c.isalnum() or c in (" ", "-", "_")).strip()
+                    if not safe_name:
+                        safe_name = f"Partner_{idx+1}"
+                        
+                    label = "Partner cum RP" if tpl_name == "AFFIDAVIT (Partner cum RP).docx" else "Partner"
+                    out_name = f"Filled_AFFIDAVIT ({label}) - {safe_name}.docx"
+                    zf.writestr(out_name, doc_buffer.read())
+                    rendered_names.append(out_name)
+                continue
+
+            if tpl_name in ["AFFIDAVIT (Director).docx", "AFFIDAVIT (Auth Signatory).docx"]:
+                applicant = {
+                    "name": context.get("prop_name", ""),
+                    "relation": context.get("prop_relation", ""),
+                    "father_name": context.get("prop_father_name", ""),
+                    "address": context.get("prop_address", ""),
+                }
+                other_dirs = context.get("directors_data", [])
+                all_dirs = [applicant] + other_dirs
+                
+                bold_applicant = {
+                    "name": bold_context.get("prop_name", ""),
+                    "relation": bold_context.get("prop_relation", ""),
+                    "father_name": bold_context.get("prop_father_name", ""),
+                    "address": bold_context.get("prop_address", ""),
+                }
+                bold_other_dirs = bold_context.get("directors_data", [])
+                all_dirs_bold = [bold_applicant] + bold_other_dirs
+
+                for idx, d_bold in enumerate(all_dirs_bold):
+                    is_current_auth = (idx == 0 and is_auth)
+                    
+                    if tpl_name == "AFFIDAVIT (Auth Signatory).docx" and not is_current_auth:
+                        continue
+                    if tpl_name == "AFFIDAVIT (Director).docx" and is_current_auth:
+                        continue
+                        
+                    ctx_copy = dict(bold_context)
+                    ctx_copy["prop_name"] = d_bold["name"]
+                    ctx_copy["prop_relation"] = d_bold["relation"]
+                    ctx_copy["prop_father_name"] = d_bold["father_name"]
+                    ctx_copy["prop_address"] = d_bold["address"]
+                    
+                    remaining_dirs = all_dirs_bold[:idx] + all_dirs_bold[idx+1:]
+                    ctx_copy["directors_data"] = remaining_dirs
+
+                    tpl = DocxTemplate(tpl_path)
+                    tpl.render(ctx_copy)
+                    doc_buffer = io.BytesIO()
+                    tpl.save(doc_buffer)
+                    doc_buffer.seek(0)
+                    
+                    safe_name = "".join(c for c in all_dirs[idx]["name"] if c.isalnum() or c in (" ", "-", "_")).strip()
+                    if not safe_name:
+                        safe_name = f"Director_{idx+1}"
+                        
+                    label = "Auth Signatory" if tpl_name == "AFFIDAVIT (Auth Signatory).docx" else "Director"
+                    out_name = f"Filled_AFFIDAVIT ({label}) - {safe_name}.docx"
+                    zf.writestr(out_name, doc_buffer.read())
+                    rendered_names.append(out_name)
                 continue
 
             tpl = DocxTemplate(tpl_path)
