@@ -573,6 +573,8 @@ def generate_documents(context: dict, template_dir: str = TEMPLATES_DIR) -> tupl
 
     with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
         for tpl_name in template_files:
+            if context.get("property_ownership") == "Owned" and "Rent Agreement" in tpl_name:
+                continue
             tpl_path = os.path.join(template_dir, tpl_name)
             tpl = DocxTemplate(tpl_path)
             tpl.render(bold_context)
@@ -924,69 +926,85 @@ def main():
                 })
                 st.markdown("---")
 
+        # ── Property Ownership ──────────────────────────────────
+        st.markdown("<br>", unsafe_allow_html=True)
+        property_ownership = st.radio(
+            "Property Ownership",
+            options=["Rented", "Owned"],
+            horizontal=True,
+            index=0
+        )
+
+        # Initialize Rent Variables to avoid NameError if Owned
+        landlord_name = landlord_relation = landlord_relative_name = landlord_address = ""
+        shop_address = rent_amount = lease_months = ""
+        rent_start_date = rent_agreement_date = None
+        neighbor_right = neighbor_left = neighbor_front = neighbor_back = ""
+
         # ── Rent Agreement ──────────────────────────────────────
-        with st.expander("Rent Agreement"):
-            col_g, col_h = st.columns(2)
+        if property_ownership == "Rented":
+            with st.expander("Rent Agreement"):
+                col_g, col_h = st.columns(2)
 
-            with col_g:
-                landlord_name = st.text_input(
-                    "Landlord Name"
-                )
-                c_ll_rel, c_ll_f = st.columns(2)
-                with c_ll_rel:
-                    landlord_relation = st.selectbox(
-                        "Relation", options=["S/o", "D/o", "W/o"], index=0,
-                        key="landlord_relation",
+                with col_g:
+                    landlord_name = st.text_input(
+                        "Landlord Name"
                     )
-                with c_ll_f:
-                    landlord_relative_name = st.text_input(
-                        "Relative Name", key="ll_rel_name",
+                    c_ll_rel, c_ll_f = st.columns(2)
+                    with c_ll_rel:
+                        landlord_relation = st.selectbox(
+                            "Relation", options=["S/o", "D/o", "W/o"], index=0,
+                            key="landlord_relation",
+                        )
+                    with c_ll_f:
+                        landlord_relative_name = st.text_input(
+                            "Relative Name", key="ll_rel_name",
+                        )
+                    landlord_address = st.text_area(
+                        "Landlord Address", height=80,
                     )
-                landlord_address = st.text_area(
-                    "Landlord Address", height=80,
-                )
-                shop_address = st.text_area(
-                    "Shop / Premises Address", height=80,
-                )
-
-            with col_h:
-                rent_amount = st.text_input(
-                    "Rent (Rs.)"
-                )
-                lease_months = st.text_input(
-                    "Lease (months)"
-                )
-                c_rs, c_ra = st.columns(2)
-                with c_rs:
-                    rent_start_date = st.date_input(
-                        "Rent Start Date", value=None,
-                        min_value=MIN_DATE, max_value=MAX_DATE,
-                        key="rent_start_date",
-                    )
-                with c_ra:
-                    rent_agreement_date = st.date_input(
-                        "Agreement Date", value=None,
-                        min_value=MIN_DATE, max_value=MAX_DATE,
-                        key="rent_agreement_date",
+                    shop_address = st.text_area(
+                        "Shop / Premises Address", height=80,
                     )
 
-            # Neighbours
-            st.markdown("**Neighbouring Boundaries**")
-            cn1, cn2 = st.columns(2)
-            with cn1:
-                neighbor_right = st.text_input(
-                    "Right"
-                )
-                neighbor_front = st.text_input(
-                    "Front"
-                )
-            with cn2:
-                neighbor_left = st.text_input(
-                    "Left"
-                )
-                neighbor_back = st.text_input(
-                    "Back"
-                )
+                with col_h:
+                    rent_amount = st.text_input(
+                        "Rent (Rs.)"
+                    )
+                    lease_months = st.text_input(
+                        "Lease (months)"
+                    )
+                    c_rs, c_ra = st.columns(2)
+                    with c_rs:
+                        rent_start_date = st.date_input(
+                            "Rent Start Date", value=None,
+                            min_value=MIN_DATE, max_value=MAX_DATE,
+                            key="rent_start_date",
+                        )
+                    with c_ra:
+                        rent_agreement_date = st.date_input(
+                            "Agreement Date", value=None,
+                            min_value=MIN_DATE, max_value=MAX_DATE,
+                            key="rent_agreement_date",
+                        )
+
+                # Neighbours
+                st.markdown("**Neighbouring Boundaries**")
+                cn1, cn2 = st.columns(2)
+                with cn1:
+                    neighbor_right = st.text_input(
+                        "Right"
+                    )
+                    neighbor_front = st.text_input(
+                        "Front"
+                    )
+                with cn2:
+                    neighbor_left = st.text_input(
+                        "Left"
+                    )
+                    neighbor_back = st.text_input(
+                        "Back"
+                    )
 
         # ── Equipment Receipts ──────────────────────────────────
         with st.expander("Equipment Receipts"):
@@ -1188,6 +1206,7 @@ def main():
             "rp_prev_firm_address": pharmacists_data[0]["prev_firm_address"] if pharmacists_data else "",
             "rp_resign_date": pharmacists_data[0]["resign_date"] if pharmacists_data else "",
             "rp_work_history": st.session_state.get("rp_work_history_0", []),
+            "property_ownership": property_ownership,
             # Rent Agreement
             "landlord_name": landlord_name.strip(),
             "landlord_relation": landlord_relation,

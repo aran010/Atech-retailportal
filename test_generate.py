@@ -15,6 +15,7 @@ from app import generate_documents
 
 SAMPLE_CONTEXT = {
     # ── Proprietor ──────────────────────────────────────────
+    "property_ownership": "Owned",
     "prop_name": "Himanshu Kumar",
     "prop_relation": "S/o",
     "prop_father_name": "Kashee Prasad",

@@ -112,9 +112,14 @@ def _template_affidavit_prop(doc):
         "said firm for its day to day conduct and control of business of the firm."
     )
     _add_para(doc,
+        "{% if property_ownership == 'Owned' %}"
+        "4. That the sale premises of my said firm is the owned property and the same "
+        "premise is under my legal possession/occupancy and it is not connected to any residence."
+        "{% else %}"
         "4. That the sale premises of my said firm is the rented property and the same "
         "premise is under my legal possession/occupancy as a tenant and it is not "
         "connected to any residence."
+        "{% endif %}"
     )
     _add_para(doc,
         "5. That I had never been a Prop or an active or sleeping partner at any such "
@@ -692,9 +697,14 @@ def _template_addr_affidavit_prop(doc):
         "said firm for its day to day conduct and control of business of the firm."
     )
     _add_para(doc,
+        "{% if property_ownership == 'Owned' %}"
+        "That the sale premises of my said firm is the owned property and the same "
+        "premise is under my legal possession/occupancy and it is not connected to any residence."
+        "{% else %}"
         "That the sale premises of my said firm is the rented property and the same "
         "premise is under my legal possession/occupancy as tenant and it is not "
         "connected to any residence."
+        "{% endif %}"
     )
     _add_para(doc,
         "That I had never been a Prop./Partner/director/auth. Signatory at any such "
