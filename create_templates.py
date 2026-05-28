@@ -90,7 +90,7 @@ def _template_ac_receipt(doc):
 # 2. AFFIDAVIT (Prop)
 # ═══════════════════════════════════════════════════════════════════════════
 def _template_affidavit_prop(doc):
-    _add_title(doc, "AFFIDAVIT (Prop)")
+    _add_title(doc, "AFFIDAVIT ({% if entity_val == 'Partner' %}Partner{% else %}Prop{% endif %})")
     _add_empty_para(doc)
     _add_para(doc,
         "I, {{r prop_name }} {{r prop_relation }} Sh. {{r prop_father_name }} "
@@ -104,7 +104,7 @@ def _template_affidavit_prop(doc):
         "Drugs & Cosmetics Act 1940 and Rules 1945 framed there under; -"
     )
     _add_para(doc,
-        "2. That I am sole proprietor of the firm M/s {{r firm_name }} Situated at "
+        "2. That I am {% if entity_val == 'Partner' %}partner{% else %}sole proprietor{% endif %} of the firm M/s {{r firm_name }} Situated at "
         "{{r firm_address }}, and do hereby applying for grant of new retail sale Drug License."
     )
     _add_para(doc,
@@ -653,7 +653,7 @@ def _template_rp_working_report(doc):
 # ADDRESS CHANGE — AFFIDAVIT (Prop)
 # ═══════════════════════════════════════════════════════════════════════════
 def _template_addr_affidavit_prop(doc):
-    _add_title(doc, "AFFIDAVB (Prop)")
+    _add_title(doc, "AFFIDAVIT ({% if entity_val == 'Partner' %}Partner{% else %}Prop{% endif %})")
     _add_empty_para(doc)
     _add_para(doc,
         "I, {{r prop_name }} {{r prop_relation }} Sh. {{r prop_father_name }} "
@@ -666,7 +666,7 @@ def _template_addr_affidavit_prop(doc):
         "Drugs & Cosmetics Act 1940 and Rules 1945 framed there under; -"
     )
     _add_para(doc,
-        "That I am sole proprietor of the firm following details:-"
+        "That I am {% if entity_val == 'Partner' %}partner{% else %}sole proprietor{% endif %} of the firm following details:-"
     )
     _add_empty_para(doc)
 

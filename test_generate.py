@@ -15,8 +15,8 @@ from app import generate_documents
 
 SAMPLE_CONTEXT = {
     # ── Proprietor ──────────────────────────────────────────
-    "entity_val": "Director",
-    "auth_signatory": True,
+    "entity_val": "Partner",
+    "auth_signatory": False,
     "directors_data": [
         {"name": "Director One", "relation": "S/o", "father_name": "Father One", "address": "Address One"},
         {"name": "Director Two", "relation": "D/o", "father_name": "Father Two", "address": "Address Two"}
