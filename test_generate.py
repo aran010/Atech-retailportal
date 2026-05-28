@@ -15,6 +15,12 @@ from app import generate_documents
 
 SAMPLE_CONTEXT = {
     # ── Proprietor ──────────────────────────────────────────
+    "entity_val": "Director",
+    "auth_signatory": True,
+    "directors_data": [
+        {"name": "Director One", "relation": "S/o", "father_name": "Father One", "address": "Address One"},
+        {"name": "Director Two", "relation": "D/o", "father_name": "Father Two", "address": "Address Two"}
+    ],
     "property_ownership": "Owned",
     "prop_name": "Himanshu Kumar",
     "prop_relation": "S/o",
@@ -43,7 +49,32 @@ SAMPLE_CONTEXT = {
     "rp_phone": "8765432109",
     "rp_prev_firm_name": "Ankar Life Care LLP",
     "rp_prev_firm_address": "Shop G-14, Varun Tower, NIT-5, Faridabad",
-    "rp_resign_date": "15-04-2026",
+    "rp_resign_date": "20-04-2026",
+    
+    "pharmacists_data": [
+        {
+            "name": "Parveen Kumar",
+            "relation": "S/o",
+            "father_name": "Shiv Charan",
+            "address": "Village Kondal, Tehsil Hathin",
+            "salary": "18,000",
+            "joining_date": "01-05-2026",
+            "reg_no": "24756",
+            "reg_date": "15-06-2020",
+            "reg_valid_upto": "14-06-2025"
+        },
+        {
+            "name": "Aakriti Singh",
+            "relation": "D/o",
+            "father_name": "Vedpal",
+            "address": "Dayalpur",
+            "salary": "18,000",
+            "joining_date": "01-04-2026",
+            "reg_no": "61584",
+            "reg_date": "10-02-2025",
+            "reg_valid_upto": "31-12-2029"
+        }
+    ],
 
     # ── Rent Agreement ──────────────────────────────────────
     "landlord_name": "Jyoti Chawla",
