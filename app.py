@@ -942,6 +942,31 @@ def main():
                         })
         st.markdown("---")
 
+        # ── Partners ──
+        partners_data = []
+        partnership_start_date = ""
+        if entity_val == "Partner":
+            st.markdown("### Partnership Details")
+            partnership_start_date = st.text_input("Partnership Start Date (e.g. 20-02-2026)")
+            num_partners = st.number_input("Number of OTHER Partners", min_value=0, max_value=20, value=1)
+            for i in range(num_partners):
+                with st.expander(f"Other Partner {i+1}", expanded=False):
+                    c1, c2 = st.columns(2)
+                    with c1:
+                        p_name = st.text_input("Name", key=f"p_name_{i}")
+                        p_rel = st.selectbox("Relation", ["S/o", "D/o", "W/o"], key=f"p_rel_{i}")
+                    with c2:
+                        p_father = st.text_input("Father/Relative Name", key=f"p_father_{i}")
+                        p_address = st.text_area("Address", height=80, key=f"p_addr_{i}")
+                    if p_name:
+                        partners_data.append({
+                            "name": p_name.strip(),
+                            "relation": p_rel,
+                            "father_name": p_father.strip(),
+                            "address": p_address.strip()
+                        })
+        st.markdown("---")
+
 
         # ── Registered Pharmacist ───────────────────────────────
         with st.expander("Registered Pharmacist Details", expanded=True):
