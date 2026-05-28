@@ -229,10 +229,15 @@ def _template_affidavit_rp(doc):
         "7. That I am not a student of any educational institute."
     )
     _add_para(doc,
+        "{% if rp_prev_firm_name or rp_prev_firm_address or rp_resign_date %}"
         "8. That previously I was worked as regd. pharmacist with the firm M/s "
         "{{r rp_prev_firm_name }} situated at {{r rp_prev_firm_address }}, and resign "
         "from the firm on dated {{r rp_resign_date }}. After resign from this firm, "
         "I have not worked as Regd. Pharmacist at anywhere anyfirm."
+        "{% else %}"
+        "8. That I have not worked as Regd. pharmacist at any firm since my registration as Regd. pharmacist. "
+        "Before Joining from this firm, I have not worked as Regd. Pharmacist at anywhere anyfirm"
+        "{% endif %}"
     )
     _add_para(doc,
         "9. That all particulars of my said qualification and registration are true "
