@@ -1264,7 +1264,7 @@ def main():
                 st.stop()
 
         # Success
-        safe_name = sanitize_filename(prop_name)
+        safe_name = sanitize_filename(firm_name)
         prefix = "Address_Change" if action_type == "address_change" else "New_Retail_File"
         zip_filename = f"{prefix}_{safe_name}.zip"
 
